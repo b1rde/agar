@@ -11,14 +11,15 @@ import java.util.concurrent.CountDownLatch;
 public class ParametersView {
     private ParametersModel model;
     private ParametersController controller;
-    private JTextField screenWidthField;
-    private JTextField screenHeightField;
-    private JTextField populationSizeField;
-    private JTextField foodGenRateField;
-    private JTextField targetFPSField;
-    private JTextField dumbMovLinField;
-    private JTextField preyDeviationField;
-    private JTextField predatorDeviationField;
+    public JTextField screenWidthField;
+    public JTextField screenHeightField;
+    public JTextField populationSizeField;
+    public JTextField foodGenRateField;
+    public JTextField targetFPSField;
+    public JTextField dumbMovLinField;
+    public JTextField preyDeviationField;
+    public JTextField predatorDeviationField;
+    public JTextField seedField;
     private CountDownLatch latch;
 
     public ParametersView(ParametersModel model, CountDownLatch latch) {
@@ -34,7 +35,7 @@ public class ParametersView {
         frame.setLocationRelativeTo(null);
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridLayout(10, 2));
+        frame.setLayout(new GridLayout(11, 2)); // Increase the row count to accommodate the new dropdown
 
         screenWidthField = new JTextField(String.valueOf(model.getScreenWidth()));
         screenHeightField = new JTextField(String.valueOf(model.getScreenHeight()));
@@ -44,6 +45,7 @@ public class ParametersView {
         dumbMovLinField = new JTextField(String.valueOf(model.getDumbMovLin()));
         preyDeviationField = new JTextField(String.valueOf(model.getPreyDeviation()));
         predatorDeviationField = new JTextField(String.valueOf(model.getPredatorDeviation()));
+        seedField = new JTextField(String.valueOf(model.getSeed()));
 
         frame.add(new JLabel("Largeur de l'écran :"));
         frame.add(screenWidthField);
@@ -61,6 +63,34 @@ public class ParametersView {
         frame.add(preyDeviationField);
         frame.add(new JLabel("Déviation d'itinéraire de Prédateur :"));
         frame.add(predatorDeviationField);
+        frame.add(new JLabel("Seed :"));
+        frame.add(seedField);
+
+        // Menu des presets
+        String[] options = {"Standard", "Haute génération de nourriture", "Haute déviation de proies"};
+        JComboBox<String> dropdown = new JComboBox<>(options);
+        dropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedOption = (String) dropdown.getSelectedItem();
+                int optionNumber = 1;
+                switch (selectedOption) {
+                    case "Standard":
+                        optionNumber = 1;
+                        break;
+                    case "Haute génération de nourriture":
+                        optionNumber = 2;
+                        break;
+                    case "Haute déviation de proies":
+                        optionNumber = 3;
+                        break;
+                }
+                controller.uploadValues(optionNumber);
+            }
+        });
+
+        frame.add(new JLabel("Preset :"));
+        frame.add(dropdown);
 
         JButton resetButton = new JButton("Valeurs par défaut");
         resetButton.addActionListener(new ActionListener() {
@@ -117,4 +147,10 @@ public class ParametersView {
     public JTextField getPredatorDeviationField() {
         return predatorDeviationField;
     }
+
+    public JTextField getSeedField() {
+        return seedField;
+    }
+
+
 }

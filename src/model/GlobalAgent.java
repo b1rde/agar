@@ -1,7 +1,6 @@
 package model;
 
 import java.awt.*;
-import java.util.Random;
 
 public abstract class GlobalAgent {
     protected double posX;
@@ -9,14 +8,12 @@ public abstract class GlobalAgent {
     protected double size;
     protected double targetX;
     protected double targetY;
-    protected Random random;
     protected Color color;
 
     public GlobalAgent(double posX, double posY, double size) {
         this.posX = posX;
         this.posY = posY;
         this.size = size;
-        this.random = new Random();
     }
 
     public void setPosition(double posX, double posY) {
@@ -50,7 +47,7 @@ public abstract class GlobalAgent {
 
     public double distanceWith(GlobalAgent otherAgent) {
         if (otherAgent == null) {
-            throw new IllegalArgumentException("distanceWith() : otherAgent cannot be null");
+            throw new IllegalArgumentException("distanceWith() : otherAgent est null");
         }
         double deltaX = this.getPosX() - otherAgent.getPosX();
         double deltaY = this.getPosY() - otherAgent.getPosY();

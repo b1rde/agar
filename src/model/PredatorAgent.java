@@ -48,7 +48,7 @@ public class PredatorAgent extends GlobalAgent {
             this.setPosition(this.getPosX() + directionX * speed, this.getPosY() + directionY * speed);
         } else {
             // Mouvement aléatoire si aucune proie n'est trouvée
-            double randomAngle = Math.random() * 2 * Math.PI;
+            double randomAngle = ParametersModel.randomDouble() * 2 * Math.PI;
 
             this.setPosition(this.getPosX() + Math.cos(randomAngle) * speed, this.getPosY() + Math.sin(randomAngle) * speed);
         }

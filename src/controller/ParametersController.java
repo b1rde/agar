@@ -21,6 +21,49 @@ public class ParametersController {
         view.getDumbMovLinField().setText(String.valueOf(model.getDumbMovLin()));
         view.getPreyDeviationField().setText(String.valueOf(model.getPreyDeviation()));
         view.getPredatorDeviationField().setText(String.valueOf(model.getPredatorDeviation()));
+        view.getSeedField().setText(String.valueOf(model.getSeed()));
+    }
+
+    // Valeurs des presets
+    public void uploadValues(int n) {
+        switch (n) {
+            // Preset standard
+            case 1:
+                view.screenWidthField.setText("1920");
+                view.screenHeightField.setText("1080");
+                view.populationSizeField.setText("300");
+                view.foodGenRateField.setText("10");
+                view.targetFPSField.setText("120");
+                view.dumbMovLinField.setText("50.0");
+                view.preyDeviationField.setText("1.2");
+                view.predatorDeviationField.setText("1.2");
+                view.seedField.setText("1");
+                break;
+            // Haute génération de nourriture
+            case 2:
+                view.screenWidthField.setText("1920");
+                view.screenHeightField.setText("1080");
+                view.populationSizeField.setText("300");
+                view.foodGenRateField.setText("100");
+                view.targetFPSField.setText("120");
+                view.dumbMovLinField.setText("50.0");
+                view.preyDeviationField.setText("1.2");
+                view.predatorDeviationField.setText("1.2");
+                view.seedField.setText("1");
+                break;
+            // Haute déviation des proies
+            case 3:
+                view.screenWidthField.setText("1920");
+                view.screenHeightField.setText("1080");
+                view.populationSizeField.setText("300");
+                view.foodGenRateField.setText("10");
+                view.targetFPSField.setText("120");
+                view.dumbMovLinField.setText("50.0");
+                view.preyDeviationField.setText("1.9");
+                view.predatorDeviationField.setText("1.2");
+                view.seedField.setText("1");
+                break;
+        }
     }
 
     public void updateModelValues() {
@@ -32,5 +75,6 @@ public class ParametersController {
         model.setDumbMovLin(Double.parseDouble(view.getDumbMovLinField().getText()));
         model.setPreyDeviation(Double.parseDouble(view.getPreyDeviationField().getText()));
         model.setPredatorDeviation(Double.parseDouble(view.getPredatorDeviationField().getText()));
+        model.setSeed(Long.parseLong(view.getSeedField().getText()));
     }
 }

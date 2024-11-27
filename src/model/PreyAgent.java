@@ -18,7 +18,7 @@ public class PreyAgent extends GlobalAgent {
     @Override
     public void move() {
         if (allAgents == null) {
-            System.out.println("allAgents is null");
+            System.out.println("allAgents est null");
             return;
         }
 
@@ -40,9 +40,9 @@ public class PreyAgent extends GlobalAgent {
         for (GlobalAgent otherAgent : allAgents) {
             if (otherAgent != null && otherAgent != this) {
                 if (otherAgent.getSize() > this.size) {
-                    hasDanger = true;
                     double distance = distanceWith(otherAgent);
                     if (distance < minDistanceToDanger) {
+                        hasDanger = true;
                         nearestDanger = otherAgent;
                         minDistanceToDanger = distance;
                     }
@@ -54,9 +54,10 @@ public class PreyAgent extends GlobalAgent {
 
             if (otherAgent != null && otherAgent != this) {
                 if (otherAgent.getSize() < this.size && (otherAgent instanceof Food || otherAgent instanceof DumbAgent)) {
-                    hasFood = true;
+
                     double distance = distanceWith(otherAgent);
                     if (distance < minDistanceToFood) {
+                        hasFood = true;
                         nearestFood = otherAgent;
                         minDistanceToFood = distance;
                     }
@@ -99,9 +100,9 @@ public class PreyAgent extends GlobalAgent {
             dirY += deltaY / distance;
         } else {
             // Mouvement aléatoire
-            double randomAngle = Math.random() * 2 * Math.PI;
+            double randomAngle = ParametersModel.randomDouble() * 2 * Math.PI;
             this.setPosition(this.getPosX() + Math.cos(randomAngle) * speed, this.getPosY() + Math.sin(randomAngle) * speed);
-            return; // Sortir de la méthode après le mouvement aléatoire
+            return;
         }
 
         double distance = Math.sqrt(dirX * dirX + dirY * dirY);

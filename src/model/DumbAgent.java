@@ -44,8 +44,8 @@ public class DumbAgent extends GlobalAgent {
         double stdDev = ParametersModel.getDumbMovLin();
 
         // Cible choisie aléatoirement sur une distribution gaussienne
-        targetX = posX + random.nextGaussian() * stdDev;
-        targetY = posY + random.nextGaussian() * stdDev;
+        targetX = posX + ParametersModel.randomGaussian() * stdDev;
+        targetY = posY + ParametersModel.randomGaussian() * stdDev;
 
         // Vérifier que la cible se trouve dans les limites de la map
         targetX = Math.max(0, Math.min(mapSizeX, targetX));

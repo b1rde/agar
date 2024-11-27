@@ -3,7 +3,6 @@ package view;
 import model.*;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -15,6 +14,8 @@ public class AgentView extends JPanel {
     private List<PathfindingAgent> allPathfindings = new CopyOnWriteArrayList<>();
     private List<GlobalAgent> agentsToRemove = new CopyOnWriteArrayList<>();
 
+    private double checkSum = 0;
+
     int mapSizeX = ParametersModel.getScreenWidth();
     int mapSizeY = ParametersModel.getScreenHeight();
 
@@ -24,23 +25,25 @@ public class AgentView extends JPanel {
     }
 
     private void initializeAgents() {
-
         int numAgents = ParametersModel.getPopulationSize(); // Nombre d'agents de chaque type
 
         for (int i = 0; i < numAgents; i++) {
-            double dumbX = Math.random() * mapSizeX;
-            double dumbY = Math.random() * mapSizeY;
+            double dumbX = ParametersModel.randomDouble() * mapSizeX;
+            double dumbY = ParametersModel.randomDouble() * mapSizeY;
 
-            double predatorX = Math.random() * mapSizeX;
-            double predatorY = Math.random() * mapSizeY;
+            double predatorX = ParametersModel.randomDouble() * mapSizeX;
+            double predatorY = ParametersModel.randomDouble() * mapSizeY;
 
-            double preyX = Math.random() * mapSizeX;
-            double preyY = Math.random() * mapSizeY;
+            double preyX = ParametersModel.randomDouble() * mapSizeX;
+            double preyY = ParametersModel.randomDouble() * mapSizeY;
 
-            double pathfindingX = Math.random() * mapSizeX;
-            double pathfindingY = Math.random() * mapSizeY;
+            double pathfindingX = ParametersModel.randomDouble() * mapSizeX;
+            double pathfindingY = ParametersModel.randomDouble() * mapSizeY;
 
-            double size = 5; // Taille minimale = 5 car taille de la nourriture = 4
+            double check = ParametersModel.randomDouble();
+            checkSum += check;
+
+            double size = 20; // Taille minimale = 5 car taille de la nourriture = 4
 
             DumbAgent dumbAgent = new DumbAgent(dumbX, dumbY, size, dumbX, dumbY);
             allAgents.add(dumbAgent);
@@ -58,6 +61,7 @@ public class AgentView extends JPanel {
             allAgents.add(pathfindingAgent);
             allPathfindings.add(pathfindingAgent);
         }
+        System.out.println(checkSum);
     }
 
     @Override
@@ -71,52 +75,26 @@ public class AgentView extends JPanel {
         }
     }
 
-
     public void updateAgents() {
         // Déplace les agents
-        Thread dumbThread = new Thread() {
-            public void run() {
-                if (!allDumbs.isEmpty()) {
-                    for (DumbAgent agent : allDumbs) {
-                        agent.move();
-                    }
-                }
-            }
-        };
-        dumbThread.start();
+        System.out.println("Random Double: " + ParametersModel.randomDouble());
 
-        Thread predatorThread = new Thread() {
-            public void run() {
-                if (!allPredators.isEmpty()) {
-                    for(PredatorAgent agent :allPredators) {
-                        agent.move();
-                    }
-                }
-            }
-        };
-        predatorThread.start();
+        // Ensure deterministic order of updates
+        for (DumbAgent agent : allDumbs) {
+            agent.move();
+        }
 
-        Thread preyThread = new Thread() {
-            public void run() {
-                if (!allPreys.isEmpty()) {
-                    for (PreyAgent agent : allPreys) {
-                        agent.move();
-                    }
-                }
-            }
-        };
-        preyThread.start();
+        for (PredatorAgent agent : allPredators) {
+            agent.move();
+        }
 
-        Thread pathfindingThread = new Thread() {
-            public void run() {
-                if (!allPathfindings.isEmpty()) {
-                    for (PathfindingAgent agent : allPathfindings) {
-                        agent.move();
-                    }
-                }
-            }
-        };
-        pathfindingThread.start();
+        for (PreyAgent agent : allPreys) {
+            agent.move();
+        }
+
+        for (PathfindingAgent agent : allPathfindings) {
+            agent.move();
+        }
 
         // Vérifie et traite les collisions entre tous les agents
         for (GlobalAgent agent : allAgents) {
@@ -128,7 +106,6 @@ public class AgentView extends JPanel {
             }
         }
 
-
         // Supprime les agents qui ont été capturés de toutes les listes
         for (GlobalAgent agent : agentsToRemove) {
             allAgents.remove(agent);
@@ -138,17 +115,16 @@ public class AgentView extends JPanel {
                 allPredators.remove(agent);
             } else if (agent instanceof PreyAgent) {
                 allPreys.remove(agent);
-            }
-            else if (agent instanceof PathfindingAgent) {
+            } else if (agent instanceof PathfindingAgent) {
                 allPathfindings.remove(agent);
             }
         }
 
         // Génère la nourriture
         for (int i = 0; i < ParametersModel.getFoodGenRate(); i++) {
-            if (Math.random() < 0.1) {
-                double foodX = Math.random() * mapSizeX;
-                double foodY = Math.random() * mapSizeY;
+            if (ParametersModel.randomDouble() < 0.1) {
+                double foodX = ParametersModel.randomDouble() * mapSizeX;
+                double foodY = ParametersModel.randomDouble() * mapSizeY;
                 Food food = new Food(foodX, foodY, 4);
                 allAgents.add(food);
             }
