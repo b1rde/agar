@@ -3,14 +3,18 @@ package model;
 import java.util.SplittableRandom;
 
 public class ParametersModel {
+    // __CAMILLE__
+    public static boolean hasEnded = false;
+
     public static int screenWidth = 1920;
     public static int screenHeight = 1080;
-    public static int populationSize = 300;
-    public static int foodGenRate = 10;
     public static int targetFPS = 120;
+    public static int populationSize = 300;
+    public static int initialSize = 5;
+    public static int initialFoodSize = 4; // New variable
+    public static int foodGenRate = 10;
     public static double dumbMovLin = 50;
     public static double preyDeviation = 1.2;
-    public static double predatorDeviation = 1.2;
     private static long seed;
     private static ThreadLocal<SplittableRandom> randomGenerator = ThreadLocal.withInitial(() -> new SplittableRandom(seed));
 
@@ -30,6 +34,14 @@ public class ParametersModel {
         ParametersModel.screenHeight = screenHeight;
     }
 
+    public static int getTargetFPS(){
+        return targetFPS;
+    }
+
+    public static void setTargetFPS(int targetFPS){
+        ParametersModel.targetFPS = targetFPS;
+    }
+
     public static int getPopulationSize(){
         return populationSize;
     }
@@ -38,20 +50,28 @@ public class ParametersModel {
         ParametersModel.populationSize = populationSize;
     }
 
+    public static int getInitialSize() {
+        return initialSize;
+    }
+
+    public static void setInitialSize(int initialSize) {
+        ParametersModel.initialSize = initialSize;
+    }
+
+    public static int getInitialFoodSize() {
+        return initialFoodSize;
+    }
+
+    public static void setInitialFoodSize(int initialFoodSize) {
+        ParametersModel.initialFoodSize = initialFoodSize;
+    }
+
     public static int getFoodGenRate(){
         return foodGenRate;
     }
 
     public static void setFoodGenRate(int foodGenRate){
         ParametersModel.foodGenRate = foodGenRate;
-    }
-
-    public static int getTargetFPS(){
-        return targetFPS;
-    }
-
-    public static void setTargetFPS(int targetFPS){
-        ParametersModel.targetFPS = targetFPS;
     }
 
     public static double getDumbMovLin(){
@@ -68,14 +88,6 @@ public class ParametersModel {
 
     public static void setPreyDeviation(double preyDeviation){
         ParametersModel.preyDeviation = preyDeviation;
-    }
-
-    public static double getPredatorDeviation(){
-        return predatorDeviation;
-    }
-
-    public static void setPredatorDeviation(double predatorDeviation){
-        ParametersModel.predatorDeviation = predatorDeviation;
     }
 
     static {
@@ -98,11 +110,12 @@ public class ParametersModel {
 
     public static synchronized double randomGaussian() {
         // Gaussien généré manuellement car pas de nextGaussian() pour SplittableRandom
+        // Méthode de Box-Muller
+        // __SOURCE__ : https://quantgirl.blog/box-muller-and-marsaglia-bray/
         SplittableRandom rng = randomGenerator.get();
         double u1 = rng.nextDouble();
         double u2 = rng.nextDouble();
         double radius = Math.sqrt(-2 * Math.log(u1));
-        double theta = 2 * Math.PI * u2;
-        return radius * Math.cos(theta);
+        return radius * Math.cos(2 * Math.PI * u2);
     }
 }

@@ -3,6 +3,7 @@ package model;
 import java.awt.*;
 
 public class DumbAgent extends GlobalAgent {
+    // __CAMILLE__
     private int mapSizeX = ParametersModel.getScreenWidth();
     private int mapSizeY = ParametersModel.getScreenHeight();
 

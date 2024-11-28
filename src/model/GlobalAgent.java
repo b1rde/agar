@@ -3,6 +3,7 @@ package model;
 import java.awt.*;
 
 public abstract class GlobalAgent {
+    // __CAMILLE__
     protected double posX;
     protected double posY;
     protected double size;

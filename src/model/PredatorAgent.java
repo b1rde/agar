@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.List;
 
 public class PredatorAgent extends GlobalAgent {
+    // __ESTEBAN__
     private List<GlobalAgent> allAgents;
     private int mapSizeX = ParametersModel.getScreenWidth();
     private int mapSizeY = ParametersModel.getScreenHeight();
@@ -24,8 +25,8 @@ public class PredatorAgent extends GlobalAgent {
 
         // Trouver la proie la plus proche
         for (GlobalAgent agent : allAgents) {
-            // Vérifie si l'agent est de type Prey, Dumb ou Pathfinding
-            if (agent instanceof PreyAgent || agent instanceof DumbAgent || agent instanceof PathfindingAgent) {
+            // Vérifie si l'agent est de type Prey ou Dumb
+            if (agent instanceof PreyAgent || agent instanceof DumbAgent) {
                 double distance = distanceWith(agent);
                 if (distance < minDistance) {
                     minDistance = distance;
@@ -53,7 +54,7 @@ public class PredatorAgent extends GlobalAgent {
             this.setPosition(this.getPosX() + Math.cos(randomAngle) * speed, this.getPosY() + Math.sin(randomAngle) * speed);
         }
 
-        // Vérifie que l'agent ne quitte pas la map
+        // Vérifie que l'agent ne quitte pas la map (__CAMILLE__)
         targetX = Math.max(0, Math.min(mapSizeX, targetX));
         targetY = Math.max(0, Math.min(mapSizeY, targetY));
     }

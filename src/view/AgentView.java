@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AgentView extends JPanel {
+    // __CAMILLE + ESTEBAN__
     private List<GlobalAgent> allAgents;
     private List<DumbAgent> allDumbs = new CopyOnWriteArrayList<>();
     private List<PredatorAgent> allPredators = new CopyOnWriteArrayList<>();
     private List<PreyAgent> allPreys = new CopyOnWriteArrayList<>();
-    private List<PathfindingAgent> allPathfindings = new CopyOnWriteArrayList<>();
     private List<GlobalAgent> agentsToRemove = new CopyOnWriteArrayList<>();
 
     private double checkSum = 0;
@@ -25,7 +25,10 @@ public class AgentView extends JPanel {
     }
 
     private void initializeAgents() {
+        // __CAMILLE__
         int numAgents = ParametersModel.getPopulationSize(); // Nombre d'agents de chaque type
+        double globalSize = ParametersModel.getInitialSize(); // Taille initiale des agents
+        System.out.println(globalSize);
 
         for (int i = 0; i < numAgents; i++) {
             double dumbX = ParametersModel.randomDouble() * mapSizeX;
@@ -37,35 +40,27 @@ public class AgentView extends JPanel {
             double preyX = ParametersModel.randomDouble() * mapSizeX;
             double preyY = ParametersModel.randomDouble() * mapSizeY;
 
-            double pathfindingX = ParametersModel.randomDouble() * mapSizeX;
-            double pathfindingY = ParametersModel.randomDouble() * mapSizeY;
-
             double check = ParametersModel.randomDouble();
             checkSum += check;
 
-            double size = 20; // Taille minimale = 5 car taille de la nourriture = 4
-
-            DumbAgent dumbAgent = new DumbAgent(dumbX, dumbY, size, dumbX, dumbY);
+            DumbAgent dumbAgent = new DumbAgent(dumbX, dumbY, globalSize, dumbX, dumbY);
             allAgents.add(dumbAgent);
             allDumbs.add(dumbAgent);
 
-            PredatorAgent predatorAgent = new PredatorAgent(predatorX, predatorY, size, allAgents);
+            PredatorAgent predatorAgent = new PredatorAgent(predatorX, predatorY, globalSize, allAgents);
             allAgents.add(predatorAgent);
             allPredators.add(predatorAgent);
 
-            PreyAgent preyAgent = new PreyAgent(preyX, preyY, size, preyX, preyY, allAgents);
+            PreyAgent preyAgent = new PreyAgent(preyX, preyY, globalSize, preyX, preyY, allAgents);
             allAgents.add(preyAgent);
             allPreys.add(preyAgent);
-
-            PathfindingAgent pathfindingAgent = new PathfindingAgent(pathfindingX, pathfindingY, size, allAgents);
-            allAgents.add(pathfindingAgent);
-            allPathfindings.add(pathfindingAgent);
         }
         System.out.println(checkSum);
     }
 
     @Override
     protected void paintComponent(Graphics graphics) {
+        // __ESTEBAN__
         super.paintComponent(graphics);
         for (GlobalAgent agent : allAgents) {
             int x = (int) (agent.getPosX() - agent.getSize() / 2);
@@ -76,10 +71,9 @@ public class AgentView extends JPanel {
     }
 
     public void updateAgents() {
-        // Déplace les agents
+        // __CAMILLE__
         System.out.println("Random Double: " + ParametersModel.randomDouble());
 
-        // Ensure deterministic order of updates
         for (DumbAgent agent : allDumbs) {
             agent.move();
         }
@@ -92,15 +86,11 @@ public class AgentView extends JPanel {
             agent.move();
         }
 
-        for (PathfindingAgent agent : allPathfindings) {
-            agent.move();
-        }
-
         // Vérifie et traite les collisions entre tous les agents
         for (GlobalAgent agent : allAgents) {
             for (GlobalAgent otherAgent : allAgents) {
                 if (agent != otherAgent && agent.collidesWith(otherAgent)) {
-                    agent.setSize(agent.getSize() + otherAgent.getSize() / 4);
+                    agent.setSize(agent.getSize() + otherAgent.getSize() / ParametersModel.getInitialFoodSize());
                     agentsToRemove.add(otherAgent);
                 }
             }
@@ -115,8 +105,6 @@ public class AgentView extends JPanel {
                 allPredators.remove(agent);
             } else if (agent instanceof PreyAgent) {
                 allPreys.remove(agent);
-            } else if (agent instanceof PathfindingAgent) {
-                allPathfindings.remove(agent);
             }
         }
 
@@ -125,11 +113,26 @@ public class AgentView extends JPanel {
             if (ParametersModel.randomDouble() < 0.1) {
                 double foodX = ParametersModel.randomDouble() * mapSizeX;
                 double foodY = ParametersModel.randomDouble() * mapSizeY;
-                Food food = new Food(foodX, foodY, 4);
+                Food food = new Food(foodX, foodY, ParametersModel.getInitialFoodSize());
                 allAgents.add(food);
             }
         }
 
         repaint();
+    }
+
+    public int getWinner() {
+        // __CAMILLE__
+        int winner = 0; // 0 = pas de winner, 1 = dumb, 2 = predator, 3 = prey
+
+        if (allPredators.isEmpty() && allPreys.isEmpty() && !allDumbs.isEmpty()) {
+            winner = 1;
+        } else if (allPredators.isEmpty() && !allPreys.isEmpty() && allDumbs.isEmpty()) {
+            winner = 3;
+        } else if (!allPredators.isEmpty() && allPreys.isEmpty() && allDumbs.isEmpty()) {
+            winner = 2;
+        }
+
+        return winner;
     }
 }

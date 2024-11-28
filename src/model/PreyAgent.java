@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.List;
 
 public class PreyAgent extends GlobalAgent {
+    // __CAMILLE__
     private List<GlobalAgent> allAgents;
 
     private int mapSizeX = ParametersModel.getScreenWidth();
@@ -99,7 +100,7 @@ public class PreyAgent extends GlobalAgent {
             dirX += deltaX / distance;
             dirY += deltaY / distance;
         } else {
-            // Mouvement aléatoire
+            // Mouvement aléatoire (__ESTEBAN__)
             double randomAngle = ParametersModel.randomDouble() * 2 * Math.PI;
             this.setPosition(this.getPosX() + Math.cos(randomAngle) * speed, this.getPosY() + Math.sin(randomAngle) * speed);
             return;
