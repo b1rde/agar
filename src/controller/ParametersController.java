@@ -44,7 +44,7 @@ public class ParametersController {
                 view.preyDeviationField.setText("1.2");
                 view.seedField.setText("1");
                 break;
-            // Haute génération de nourriture
+            // Hypothèse 1
             case 2:
                 view.screenWidthField.setText("1920");
                 view.screenHeightField.setText("1080");
@@ -57,7 +57,7 @@ public class ParametersController {
                 view.preyDeviationField.setText("1.2");
                 view.seedField.setText("1");
                 break;
-            // Haute déviation des proies
+            // Hypothèse 2
             case 3:
                 view.screenWidthField.setText("1920");
                 view.screenHeightField.setText("1080");
@@ -70,8 +70,32 @@ public class ParametersController {
                 view.preyDeviationField.setText("1.9");
                 view.seedField.setText("1");
                 break;
-
-                // etc.
+            // Hypothèse 3
+            case 4:
+                view.screenWidthField.setText("1920");
+                view.screenHeightField.setText("1080");
+                view.targetFPSField.setText("120");
+                view.populationSizeField.setText("300");
+                view.initialSizeField.setText("5");
+                view.initialFoodSizeField.setText("4");
+                view.foodGenRateField.setText("1");
+                view.dumbMovLinField.setText("50.0");
+                view.preyDeviationField.setText("0.1");
+                view.seedField.setText("1");
+                break;
+            // Hypothèse 4
+            case 5:
+                view.screenWidthField.setText("1920");
+                view.screenHeightField.setText("1080");
+                view.targetFPSField.setText("120");
+                view.populationSizeField.setText("300");
+                view.initialSizeField.setText("20");
+                view.initialFoodSizeField.setText("19");
+                view.foodGenRateField.setText("10");
+                view.dumbMovLinField.setText("50.0");
+                view.preyDeviationField.setText("1.2");
+                view.seedField.setText("1");
+                break;
         }
     }
 

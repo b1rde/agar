@@ -72,7 +72,7 @@ public class ParametersView {
         frame.add(seedField);
 
         // Menu des presets
-        String[] options = {"Standard", "Haute génération de nourriture", "Haute déviation de proies"};
+        String[] options = {"Standard", "Hypothèse 1", "Hypothèse 2", "Hypothèse 3", "Hypothèse 4"};
         JComboBox<String> dropdown = new JComboBox<>(options);
         dropdown.addActionListener(new ActionListener() {
             @Override
@@ -80,14 +80,20 @@ public class ParametersView {
                 String selectedOption = (String) dropdown.getSelectedItem();
                 int optionNumber = 1;
                 switch (selectedOption) {
-                    case "Valeurs par défaut":
+                    case "Standard":
                         optionNumber = 1;
                         break;
-                    case "Haute génération de nourriture":
+                    case "Hypothèse 1":
                         optionNumber = 2;
                         break;
-                    case "Haute déviation de proies":
+                    case "Hypothèse 2":
                         optionNumber = 3;
+                        break;
+                    case "Hypothèse 3":
+                        optionNumber = 4;
+                        break;
+                    case "Hypothèse 4":
+                        optionNumber = 5;
                         break;
                 }
                 controller.uploadValues(optionNumber);

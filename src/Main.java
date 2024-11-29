@@ -40,7 +40,7 @@ public class Main {
 
                         switch (agentView.getWinner()) {
                             case 1:
-                                displayVictoryMessage(agentView, "Les agents Dumb gagnent");
+                                displayVictoryMessage(agentView, "Les agents Dumb gagnent ?");
                                 break;
                             case 2:
                                 displayVictoryMessage(agentView, "Les prédateurs gagnent");
